@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+
+	<cron>
+		<url>/api/article/do_user_writes</url>
+		<description>Persist the write cache to the datastore</description>
+		<schedule>every 60 minutes</schedule>
+	</cron>
+
+</cronentries>

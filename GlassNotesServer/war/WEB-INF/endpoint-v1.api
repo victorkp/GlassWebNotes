@@ -1,0 +1,114 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://myapp.appspot.com/_ah/api",
+  "name" : "endpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "deadline" : 10.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "endpoint.notes.add" : {
+      "path" : "notes_put",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com" ],
+      "clientIds" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com", "965606050172-6ovcrmugbs5na7p9i1et1tjbf4isv08p.apps.googleusercontent.com", "965606050172.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putReadArticles",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "endpoint.notes.list" : {
+      "path" : "notes_get",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com" ],
+      "clientIds" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com", "965606050172-6ovcrmugbs5na7p9i1et1tjbf4isv08p.apps.googleusercontent.com", "965606050172.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getReadArticles",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "endpoint.persist_cache" : {
+      "path" : "persist_cache",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.persistCache",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "UserData" : {
+        "id" : "UserData",
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "lastModified" : {
+            "type" : "string",
+            "format" : "int64"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putReadArticles" : {
+        "request" : {
+          "$ref" : "UserData"
+        },
+        "response" : {
+          "$ref" : "UserData"
+        }
+      },
+      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getReadArticles" : {
+        "response" : {
+          "$ref" : "UserData"
+        }
+      },
+      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.persistCache" : {
+        "response" : {
+          "$ref" : "UserData"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GlassNotesApp</string>
+    <string name="voice_list_launch">show me my notes</string>
+    <string name="voice_add_launch">take a note</string>
+    <string name="voice_add_prompt">go ahead</string>
+    <string name="menu_add_note">Add Note</string>
+    <string name="menu_sign_out">Sign Out</string>
+    <string name="title_activity_auth">Sign In</string>
+    <string name="text_auth_failure">Could not connect</string>
+    <string name="text_sign_in_info">Let\'s sign in&#8230;</string>
+    <string name="text_tap_to_begin">Tap to begin</string>
+    <string name="text_tap_to_try_again">Tap to try again</string>
+
+</resources>
