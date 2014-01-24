@@ -30,8 +30,10 @@ public final class R {
         public static final int menu_sign_out=0x7f040005;
         public static final int text_auth_failure=0x7f040007;
         public static final int text_sign_in_info=0x7f040008;
-        public static final int text_tap_to_begin=0x7f040009;
-        public static final int text_tap_to_try_again=0x7f04000a;
+        public static final int text_tap_to_begin=0x7f04000a;
+        public static final int text_tap_to_finish=0x7f04000c;
+        public static final int text_tap_to_try_again=0x7f04000b;
+        public static final int text_user_code_enter_at_url=0x7f040009;
         public static final int title_activity_auth=0x7f040006;
         public static final int voice_add_launch=0x7f040002;
         public static final int voice_add_prompt=0x7f040003;
