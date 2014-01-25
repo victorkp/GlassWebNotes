@@ -1,6 +1,7 @@
 package com.victor.kaiser.pendergrast.glass.notes;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,9 +19,12 @@ public class MainActivity extends Activity {
 		
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		if(mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "").isEmpty()){
+		// Check to make sure that we have a device code
+		// that can be used to get an auth token
+		if(mPrefs.getString(PreferenceConstants.DEVICE_CODE, "").isEmpty()){
 			// Launch the authentication immersion
-			
+			Intent i = new Intent(this, AuthActivity.class);
+			startActivity(i);
 		}
 		
 		// Get the most recent notes

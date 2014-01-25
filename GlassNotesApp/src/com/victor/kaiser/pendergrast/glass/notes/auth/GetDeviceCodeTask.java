@@ -16,7 +16,7 @@ import android.util.Log;
  * See https://developers.google.com/accounts/docs/OAuth2ForDevices
  * for more detail
  */
-public class AuthTask extends AsyncTask<String, Integer, Integer> {
+public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
 	
 	private static final String TAG = "AuthTask";
 	
@@ -31,7 +31,7 @@ public class AuthTask extends AsyncTask<String, Integer, Integer> {
 	/**
 	 * The response received from the server
 	 */
-	private String mResponse;
+	private String mResponse = "";
 	
 	/**
 	 * Wrapper class for OAuth client ID that was setup on 
@@ -58,14 +58,14 @@ public class AuthTask extends AsyncTask<String, Integer, Integer> {
 	protected Integer doInBackground(String... params) {
 
 		try {
-			URL urlObject = new URL("accounts.google.com/o/oauth2/token");
+			URL urlObject = new URL("https://accounts.google.com/o/oauth2/device/code");
 
 			HttpsURLConnection con = (HttpsURLConnection) urlObject.openConnection();
 			
-			con.setRequestMethod("PUT");
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			con.setRequestProperty("client_id", AuthConstants.CLIENT_ID);
-			con.setRequestProperty("scope", "email%20profile");
+			con.setRequestMethod("POST");
+			con.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			//con.addRequestProperty("client_id", AuthConstants.CLIENT_ID);
+			//con.addRequestProperty("scope", "email%20profile");
 
 			con.setDoOutput(true);
 
@@ -74,6 +74,9 @@ public class AuthTask extends AsyncTask<String, Integer, Integer> {
 			//Log.i(TAG, "Getting outputStream");
 			OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
 			//Log.i(TAG, "Got outputStream");
+			
+			String urlParams = "client_id="+AuthConstants.CLIENT_ID+"&scope=email%20profile";
+			out.write(urlParams);
 			
 			out.flush();
 			out.close();
@@ -97,14 +100,12 @@ public class AuthTask extends AsyncTask<String, Integer, Integer> {
 				// Response is good
 				BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-				String response = "";
-				
+						
 				for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-					response += line;
+					mResponse += line;
 				}
 				
-				Log.i(TAG, "Response:\"\n" + response + "\n\"");
-				
+				Log.i(TAG, "Response: \"\n" + mResponse + "\n\"");				
 				
 				return SUCCESS;
 			}

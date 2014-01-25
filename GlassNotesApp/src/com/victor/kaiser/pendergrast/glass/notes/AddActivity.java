@@ -29,7 +29,8 @@ public class AddActivity extends Activity {
 
 		if (mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "").isEmpty()) {
 			// Launch the authentication immersion
-
+			Intent i = new Intent(this, AuthActivity.class);
+			startActivity(i);
 		}
 	}
 
