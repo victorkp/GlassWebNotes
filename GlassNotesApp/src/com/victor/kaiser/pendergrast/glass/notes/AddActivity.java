@@ -27,11 +27,17 @@ public class AddActivity extends Activity {
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		if (mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "").isEmpty()) {
+		// Check to make sure that there is a Refresh Token
+		if(mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, "").isEmpty()){
 			// Launch the authentication immersion
 			Intent i = new Intent(this, AuthActivity.class);
 			startActivity(i);
 		}
+		
+		Log.d(TAG, "Auth token: \"" + mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "") + "\"");
+		Log.d(TAG, "Refresh token: \"" + mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, "") + "\"");
+		
+		
 	}
 
 	@Override

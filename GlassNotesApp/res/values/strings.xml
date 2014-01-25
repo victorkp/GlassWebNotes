@@ -10,9 +10,12 @@
     <string name="title_activity_auth">Sign In</string>
     <string name="text_auth_failure">Could not connect</string>
     <string name="text_loading">Loading&#8230;</string>
+    <string name="text_testing">Testing settings&#8230;</string>
+    <string name="text_all_done">All done!</string>
     <string name="text_sign_in_info">Let\'s sign in&#8230;</string>
     <string name="text_user_code_enter_at_url">On a computer, go to %1$s and enter the code %2$s when asked</string>
     <string name="text_tap_to_begin">Tap to begin</string>
+    <string name="text_tap_to_continue">Tap to continue</string>
     <string name="text_tap_to_try_again">Tap to try again</string>
     <string name="text_tap_to_finish">Tap to finish setup</string>
 

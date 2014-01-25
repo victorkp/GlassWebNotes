@@ -6,7 +6,7 @@ import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants
 
 import android.content.SharedPreferences;
 
-public class AuthJsonParser {
+public class DeviceCodeJsonParser {
 
 	/**
 	 * The fields that are expected in the JSON response
@@ -26,7 +26,7 @@ public class AuthJsonParser {
 	private long mExpiration;
 	private int mInterval;
 
-	public AuthJsonParser(String jsonResponse) {
+	public DeviceCodeJsonParser(String jsonResponse) {
 
 		try {
 			JSONObject obj = new JSONObject(jsonResponse);

@@ -11,11 +11,13 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int ic_no_50=0x7f020001;
-        public static final int ic_note_50=0x7f020002;
-        public static final int ic_warning_50=0x7f020003;
-        public static final int text_gradient=0x7f020004;
+        public static final int ic_done_150=0x7f020000;
+        public static final int ic_done_50=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int ic_no_50=0x7f020003;
+        public static final int ic_note_50=0x7f020004;
+        public static final int ic_warning_50=0x7f020005;
+        public static final int text_gradient=0x7f020006;
     }
     public static final class id {
         public static final int card=0x7f070000;
@@ -38,13 +40,16 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int menu_add_note=0x7f050004;
         public static final int menu_sign_out=0x7f050005;
+        public static final int text_all_done=0x7f05000a;
         public static final int text_auth_failure=0x7f050007;
         public static final int text_loading=0x7f050008;
-        public static final int text_sign_in_info=0x7f050009;
-        public static final int text_tap_to_begin=0x7f05000b;
-        public static final int text_tap_to_finish=0x7f05000d;
-        public static final int text_tap_to_try_again=0x7f05000c;
-        public static final int text_user_code_enter_at_url=0x7f05000a;
+        public static final int text_sign_in_info=0x7f05000b;
+        public static final int text_tap_to_begin=0x7f05000d;
+        public static final int text_tap_to_continue=0x7f05000e;
+        public static final int text_tap_to_finish=0x7f050010;
+        public static final int text_tap_to_try_again=0x7f05000f;
+        public static final int text_testing=0x7f050009;
+        public static final int text_user_code_enter_at_url=0x7f05000c;
         public static final int title_activity_auth=0x7f050006;
         public static final int voice_add_launch=0x7f050002;
         public static final int voice_add_prompt=0x7f050003;

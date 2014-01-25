@@ -16,7 +16,7 @@ import android.util.Log;
  * See https://developers.google.com/accounts/docs/OAuth2ForDevices
  * for more detail
  */
-public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
+public class RefreshAuthTokenTask extends AsyncTask<String, Integer, Integer> {
 	
 	private static final String TAG = "AuthTask";
 	
@@ -26,7 +26,7 @@ public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
 	/**
 	 * Listener to call once we're done
 	 */
-	private OnGetDeviceCodeListener mListener;
+	private OnGetTokenListener mListener;
 	
 	/**
 	 * The response received from the server
@@ -37,19 +37,29 @@ public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
 	 * A simple functional interface that gets called
 	 * once 
 	 */
-	public static interface OnGetDeviceCodeListener {
+	public static interface OnGetTokenListener {
 		public void onResponse(boolean success, String response);
 	}
 	
-	public void setListener(OnGetDeviceCodeListener listener){
+	public void setListener(OnGetTokenListener listener){
 		mListener = listener;
 	}
 	
 	@Override
 	protected Integer doInBackground(String... params) {
+		
+		if(params.length != 1){
+			return FAILURE;
+		}
+		
+		String refreshToken = params[0];
+		
+		if(refreshToken.isEmpty()){
+			return FAILURE;
+		}
 
 		try {
-			URL urlObject = new URL("https://accounts.google.com/o/oauth2/device/code");
+			URL urlObject = new URL("https://accounts.google.com/o/oauth2/token");
 
 			HttpsURLConnection con = (HttpsURLConnection) urlObject.openConnection();
 			
@@ -57,19 +67,22 @@ public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
 			con.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
 			con.setDoOutput(true);
-
 			con.connect();
-			
+
 			// Now write the parameters:
-			// Client ID and the requested scope
+			// Client ID, Client Secret, Device Code, and what kind of Grant
 			OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
 			
-			String urlParams = "client_id="+AuthConstants.CLIENT_ID+"&scope=email%20profile";
+			String urlParams = "client_id=" + AuthConstants.CLIENT_ID + 
+								"&client_secret=" + AuthConstants.CLIENT_SECRET + 
+								"&refresh_token=" + refreshToken + 
+								"&grant_type=refresh_token";
 			out.write(urlParams);
 			
 			out.flush();
 			out.close();
 			
+
 			int serverCode = con.getResponseCode();
 
 			Log.i(TAG, "HttpURLConnection response: " + serverCode);
