@@ -11,15 +11,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 /**
- * A class to get authentication initially setup 
+ * An AsyncTask to get authentication initially setup 
  * so that later we can get OAuth tokens
+ * 
+ * Should be executed with the device code as a parameter
+ * 
  * See https://developers.google.com/accounts/docs/OAuth2ForDevices
  * for more detail
  */
 public class GetAuthTokenTask extends AsyncTask<String, Integer, Integer> {
 	
 	private static final String TAG = "AuthTask";
-	
 	private static final Integer SUCCESS = 1;
 	private static final Integer FAILURE = 0;
 	
@@ -35,7 +37,7 @@ public class GetAuthTokenTask extends AsyncTask<String, Integer, Integer> {
 	
 	/**
 	 * A simple functional interface that gets called
-	 * once 
+	 * once the token is received or if there's a problem
 	 */
 	public static interface OnGetTokenListener {
 		public void onResponse(boolean success, String response);
@@ -126,7 +128,5 @@ public class GetAuthTokenTask extends AsyncTask<String, Integer, Integer> {
 			mListener.onResponse(success, mResponse);
 		}
 	}
-	
-	
 
 }

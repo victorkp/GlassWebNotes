@@ -35,7 +35,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>cron</web-resource-name>
-			<url-pattern>/_a/api/endpoint/v1/persist_cache/*</url-pattern>
+			<url-pattern>/_ah/api/endpoint/v1/persist_cache/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>

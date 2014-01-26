@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://myapp.appspot.com/_ah/api",
+  "root" : "https://glass-notes-app.appspot.com/_ah/api",
   "name" : "endpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://myapp.appspot.com/_ah/spi",
+    "bns" : "https://glass-notes-app.appspot.com/_ah/spi",
     "deadline" : 10.0,
     "type" : "lily"
   },
@@ -29,8 +29,8 @@
       "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com" ],
-      "clientIds" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com", "965606050172-6ovcrmugbs5na7p9i1et1tjbf4isv08p.apps.googleusercontent.com", "965606050172.apps.googleusercontent.com" ],
+      "audiences" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com" ],
+      "clientIds" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com", "81905218945.apps.googleusercontent.com" ],
       "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putReadArticles",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
@@ -45,8 +45,8 @@
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com" ],
-      "clientIds" : [ "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com", "965606050172-6ovcrmugbs5na7p9i1et1tjbf4isv08p.apps.googleusercontent.com", "965606050172.apps.googleusercontent.com" ],
+      "audiences" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com" ],
+      "clientIds" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com", "81905218945.apps.googleusercontent.com" ],
       "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getReadArticles",
       "request" : {
         "body" : "empty"

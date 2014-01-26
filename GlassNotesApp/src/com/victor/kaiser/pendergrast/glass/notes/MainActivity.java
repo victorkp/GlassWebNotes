@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 
+import com.victor.kaiser.pendergrast.glass.notes.auth.AuthTokenJsonParser;
 import com.victor.kaiser.pendergrast.glass.notes.auth.RefreshAuthTokenTask;
 import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants;
 
@@ -48,7 +49,20 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	@Override
 	public void onResponse(boolean success, String response) {
 		if(success){
+			AuthTokenJsonParser parser = new AuthTokenJsonParser(response);
 			
+			if(parser.hasError()){
+				Log.e(TAG, parser.getError());
+				
+				// TODO Show failure to sync
+				
+			}else{
+				parser.writeToPreferences(mPrefs);
+				String authToken = parser.getAuthToken();
+
+				// Now sync the notes
+				
+			}
 		}
 	}
 	

@@ -16,8 +16,9 @@ public final class R {
         public static final int ic_launcher=0x7f020002;
         public static final int ic_no_50=0x7f020003;
         public static final int ic_note_50=0x7f020004;
-        public static final int ic_warning_50=0x7f020005;
-        public static final int text_gradient=0x7f020006;
+        public static final int ic_pen_50=0x7f020005;
+        public static final int ic_warning_50=0x7f020006;
+        public static final int text_gradient=0x7f020007;
     }
     public static final class id {
         public static final int card=0x7f070000;

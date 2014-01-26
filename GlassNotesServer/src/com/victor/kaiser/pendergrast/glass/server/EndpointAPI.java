@@ -19,9 +19,12 @@ public class EndpointAPI {
 	 * All of the authentication constants 
 	 */
 	private static class Constants {
-		public static final String WEB_CLIENT_ID = "965606050172-eonaaemefblfmd5ph3eg445vn18s3tl7.apps.googleusercontent.com";
-		public static final String ANDROID_CLIENT_ID1 = "965606050172-6ovcrmugbs5na7p9i1et1tjbf4isv08p.apps.googleusercontent.com";
-		public static final String ANDROID_CLIENT_ID2 = "965606050172.apps.googleusercontent.com";
+		public static final String WEB_CLIENT_ID = "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com";
+		
+		public static final String DEVICE_CLIENT_ID = "81905218945.apps.googleusercontent.com";
+		
+		//public static final String ANDROID_CLIENT_ID1 = "965606050172-6ovcrmugbs5na7p9i1et1tjbf4isv08p.apps.googleusercontent.com";
+		//public static final String ANDROID_CLIENT_ID2 = "965606050172.apps.googleusercontent.com";
 
 		public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
 
@@ -32,7 +35,7 @@ public class EndpointAPI {
 	/**
 	 * Used by the client to retrieve notes 
 	 */
-	@ApiMethod(name = "notes.list", path = "notes_get", httpMethod = HttpMethod.GET, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID1, Constants.ANDROID_CLIENT_ID2 }, audiences = { Constants.ANDROID_AUDIENCE })
+	@ApiMethod(name = "notes.list", path = "notes_get", httpMethod = HttpMethod.GET, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.DEVICE_CLIENT_ID }, audiences = { Constants.WEB_CLIENT_ID })
 	public UserData getReadArticles(User user) throws OAuthRequestException, IOException {
 		
 		// Check that the user is signed in
@@ -52,7 +55,7 @@ public class EndpointAPI {
 	/**
 	 * Used by the client to set notes
 	 */
-	@ApiMethod(name = "notes.add", path="notes_put", httpMethod = HttpMethod.PUT, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID1, Constants.ANDROID_CLIENT_ID2}, audiences = { Constants.ANDROID_AUDIENCE} )
+	@ApiMethod(name = "notes.add", path="notes_put", httpMethod = HttpMethod.PUT, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.DEVICE_CLIENT_ID}, audiences = { Constants.ANDROID_AUDIENCE} )
 	public UserData putReadArticles(User user, UserData data) throws OAuthRequestException, IOException, IllegalArgumentException {
 		
 		if (user == null) {
