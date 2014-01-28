@@ -122,7 +122,8 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 			if(parser.hasError()){
 				Log.e(TAG, parser.getError());
 				
-				// TODO Show failure to sync
+				// Show failure to sync
+				displayFailure();
 				
 			}else{
 				parser.writeToPreferences(mPrefs);
@@ -157,7 +158,6 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 			}
 		}
 	}
-	
 
 	
 	private void addNote(){
@@ -173,7 +173,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 					finish();
 				} else {
 					// Show failure to sync
-					displayFailure();
+					displayFailureToAdd();
 				}
 			}
 		});
@@ -187,6 +187,24 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 
 		mCardTitle.setText(R.string.text_auth_failure);
 		mCardSubTitle.setText(R.string.text_tap_to_try_again);
+		mCardImage.setImageResource(R.drawable.ic_warning_50);
+	}
+
+	private void displayFailureToAdd() {
+		// Play an error sound
+		playErrorSound();
+
+		mCardTitle.setText(R.string.text_failure_to_add);
+		mCardSubTitle.setText(getString(R.string.text_check_internet));
+		mCardImage.setImageResource(R.drawable.ic_warning_50);
+	}
+
+	private void displayFailureToSignIn() {
+		// Play an error sound
+		playErrorSound();
+
+		mCardTitle.setText(R.string.text_failure_to_sign_in);
+		mCardSubTitle.setText(getString(R.string.text_check_internet));
 		mCardImage.setImageResource(R.drawable.ic_warning_50);
 	}
 

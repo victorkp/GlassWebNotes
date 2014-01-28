@@ -14,6 +14,9 @@
     <string name="text_all_done">All done!</string>
     <string name="text_sign_in_info">Let\'s sign in&#8230;</string>
     <string name="text_user_code_enter_at_url">On a computer, go to %1$s and enter the code %2$s when asked</string>
+    <string name="text_failed_to_add_note">Couldn\'t add the note</string>
+    <string name="text_failed_to_sign_in">Couldn\'t sign in</string>
+    <string name="text_check_internet">Make sure that you have internet access</string>
     <string name="text_tap_to_begin">Tap to begin</string>
     <string name="text_tap_to_continue">Tap to continue</string>
     <string name="text_tap_to_try_again">Tap to try again</string>

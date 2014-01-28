@@ -8,6 +8,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.victor.kaiser.pendergrast.glass.notes.auth.AuthTokenJsonParser;
 import com.victor.kaiser.pendergrast.glass.notes.auth.RefreshAuthTokenTask;
 import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants;
@@ -48,6 +52,29 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case R.id.menu_add_note:
+			Intent addIntent = new Intent(this, AddActivity.class);
+			startActivity(addIntent);
+			finish();
+			break;
+		case R.id.menu_sign_out:
+			// Clear all the saved tokens and codes
+			// and then close this Activity
+			mPrefs.edit()
+				.putString(PreferenceConstants.AUTH_TOKEN, "")
+				.putString(PreferenceConstants.REFRESH_TOKEN, "")
+				.putString(PreferenceConstants.DEVICE_CODE, "")
+				.commit();
+			finish();
+			break;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onResponse(boolean success, String response) {
 		if(success){
 			AuthTokenJsonParser parser = new AuthTokenJsonParser(response);
@@ -55,7 +82,11 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			if(parser.hasError()){
 				Log.e(TAG, parser.getError());
 				
-				// TODO Show failure to sync
+				// Show failure to sync
+				setContentView(R.layout.card_full_image);
+				((TextView) findViewById(R.id.card_title)).setText(getString(R.string.text_failed_to_sign_in));
+				((TextView) findViewById(R.id.card_subtitle)).setText(getString(R.string.text_check_internet));
+				((ImageView) findViewById(R.id.card_image)).setImageResource(R.drawable.ic_warning_50);
 				
 			}else{
 				parser.writeToPreferences(mPrefs);
