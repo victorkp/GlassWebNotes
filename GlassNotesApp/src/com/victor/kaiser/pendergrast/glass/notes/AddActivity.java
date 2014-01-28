@@ -146,8 +146,8 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 							// add the new note
 							addNote();
 						}else{
-							// TODO Show failure to sync
-							
+							// Show failure to sync
+							displayFailure();
 						}
 					}
 				});
@@ -169,14 +169,41 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 			public void onResponse(boolean success, String response){
 				if(success){
 					// All done with putting notes
+					playSuccessSound();
 					finish();
 				} else {
-					// TODO Show failure to sync
+					// Show failure to sync
+					displayFailure();
 				}
 			}
 		});
 
 		putTask.execute(mAuthToken);
+	}
+
+	private void displayFailure() {
+		// Play an error sound
+		playErrorSound();
+
+		mCardTitle.setText(R.string.text_auth_failure);
+		mCardSubTitle.setText(R.string.text_tap_to_try_again);
+		mCardImage.setImageResource(R.drawable.ic_warning_50);
+	}
+
+	/**
+	 * Play the standard Glass success sound
+	 */
+	protected void playSuccessSound() {
+		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		audio.playSoundEffect(Sounds.SUCCESS);
+	}
+
+	/**
+	 * Play the standard Glass failure sound
+	 */
+	protected void playErrorSound() {
+		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		audio.playSoundEffect(Sounds.ERROR);
 	}
 
 }

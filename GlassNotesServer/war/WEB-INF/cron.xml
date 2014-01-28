@@ -2,7 +2,7 @@
 <cronentries>
 
 	<cron>
-		<url>/api/article/do_user_writes</url>
+		<url>/_ah/api/endpoint/v1/persist_cache</url>
 		<description>Persist the write cache to the datastore</description>
 		<schedule>every 60 minutes</schedule>
 	</cron>
