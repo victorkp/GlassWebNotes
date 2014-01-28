@@ -39,7 +39,10 @@ public class AuthTokenJsonParser {
 				mToken = obj.getString(JSONFields.ACCESS_TOKEN);
 				mTokenType = obj.getString(JSONFields.TOKEN_TYPE);
 				mExpiration = obj.getLong(JSONFields.EXPIRES_IN);
-				mRefreshToken = obj.getString(JSONFields.REFRESH_TOKEN);
+				
+				if(obj.has(JSONFields.REFRESH_TOKEN)){
+				       	mRefreshToken = obj.getString(JSONFields.REFRESH_TOKEN);
+				}
 			}
 			
 		} catch (Exception e) {
@@ -48,10 +51,19 @@ public class AuthTokenJsonParser {
 	}
 	
 	public void writeToPreferences(SharedPreferences prefs){
-		prefs.edit()
-			.putString(PreferenceConstants.AUTH_TOKEN, mToken)
-			.putString(PreferenceConstants.REFRESH_TOKEN, mRefreshToken)
-			.commit();
+		// Only write the refresh token if
+		// it is here
+		if(mRefreshToken != null){
+			prefs.edit()
+				.putString(PreferenceConstants.AUTH_TOKEN, mToken)
+				.putString(PreferenceConstants.REFRESH_TOKEN, mRefreshToken)
+				.commit();
+		} else {
+			prefs.edit()
+				.putString(PreferenceConstants.AUTH_TOKEN, mToken)
+				.commit();
+		}
+
 	}
 
 	public boolean hasError(){

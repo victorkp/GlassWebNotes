@@ -46,7 +46,7 @@ public class EndpointAPI {
 		UserData userData = UserDatabase.getUserByEmail(user.getEmail());
 
 		if(userData == null){
-			return new UserData(user.getEmail(), "No data", System.currentTimeMillis());
+			return new UserData(user.getEmail(), "", 0);
 		}
 		
 		return userData;

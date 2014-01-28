@@ -40,7 +40,7 @@ public class GetAuthTokenTask extends AsyncTask<String, Integer, Integer> {
 	 * once the token is received or if there's a problem
 	 */
 	public static interface OnGetTokenListener {
-		public void onResponse(boolean success, String response);
+		public void onTokenReceived(boolean success, String response);
 	}
 	
 	public void setListener(OnGetTokenListener listener){
@@ -125,7 +125,7 @@ public class GetAuthTokenTask extends AsyncTask<String, Integer, Integer> {
 	
 	private void callListener(boolean success){
 		if(mListener != null){
-			mListener.onResponse(success, mResponse);
+			mListener.onTokenReceived(success, mResponse);
 		}
 	}
 

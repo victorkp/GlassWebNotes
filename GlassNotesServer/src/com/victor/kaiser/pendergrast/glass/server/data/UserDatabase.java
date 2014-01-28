@@ -67,7 +67,7 @@ public class UserDatabase {
 	 *         that email
 	 */
 	public static UserData getUserByEmail(String email) {
-		UserData user = userCache.get(email);
+		UserData user = getUserFromCache(email);
 		if (user != null) {
 			return user;
 		}

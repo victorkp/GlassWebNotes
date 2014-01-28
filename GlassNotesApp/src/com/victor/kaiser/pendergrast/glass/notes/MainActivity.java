@@ -11,6 +11,7 @@ import android.view.Menu;
 import com.victor.kaiser.pendergrast.glass.notes.auth.AuthTokenJsonParser;
 import com.victor.kaiser.pendergrast.glass.notes.auth.RefreshAuthTokenTask;
 import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants;
+import com.victor.kaiser.pendergrast.glass.notes.api.GetNotesTask;
 
 public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGetTokenListener {
 	private static final String TAG = "MainActivity";
@@ -61,6 +62,24 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 				String authToken = parser.getAuthToken();
 
 				// Now sync the notes
+				Log.i(TAG, "Starting GetNotesTask");
+
+				GetNotesTask task = new GetNotesTask();
+				task.setListener(new GetNotesTask.OnGetNotesListener(){
+					@Override
+					public void onReceiveNotes(boolean success, String response){
+						Log.i(TAG, "onGetNotes: " + success);
+						if(success){
+							// Display the notes
+							Log.i(TAG, response);
+						}else{
+							// TODO Show failure to sync
+							
+						}
+					}
+				});
+				
+				task.execute(authToken);
 				
 			}
 		}

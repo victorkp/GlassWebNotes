@@ -83,7 +83,7 @@ public class AuthActivity extends Activity {
 
 				task.setListener(new OnGetDeviceCodeListener() {
 					@Override
-					public void onResponse(boolean success, String response) {
+					public void onReceiveDeviceCode(boolean success, String response) {
 						if (success) {
 							// The response is in JSON and has to be parsed
 							DeviceCodeJsonParser parser = new DeviceCodeJsonParser(
@@ -133,7 +133,7 @@ public class AuthActivity extends Activity {
 				GetAuthTokenTask authTask = new GetAuthTokenTask();
 				authTask.setListener(new GetAuthTokenTask.OnGetTokenListener() {
 					@Override
-					public void onResponse(boolean success, String response) {
+					public void onTokenReceived(boolean success, String response) {
 
 						if (success) {
 

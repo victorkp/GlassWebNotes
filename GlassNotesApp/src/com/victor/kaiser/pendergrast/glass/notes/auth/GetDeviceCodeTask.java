@@ -38,7 +38,7 @@ public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
 	 * once 
 	 */
 	public static interface OnGetDeviceCodeListener {
-		public void onResponse(boolean success, String response);
+		public void onReceiveDeviceCode(boolean success, String response);
 	}
 	
 	public void setListener(OnGetDeviceCodeListener listener){
@@ -110,7 +110,7 @@ public class GetDeviceCodeTask extends AsyncTask<String, Integer, Integer> {
 	
 	private void callListener(boolean success){
 		if(mListener != null){
-			mListener.onResponse(success, mResponse);
+			mListener.onReceiveDeviceCode(success, mResponse);
 		}
 	}
 	

@@ -2,23 +2,29 @@ package com.victor.kaiser.pendergrast.glass.notes.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.victor.kaiser.pendergrast.glass.notes.auth.AuthConstants;
+import com.victor.kaiser.pendergrast.glass.notes.auth.GetAuthTokenTask.OnGetTokenListener;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 /**
  * An AsyncTask to get the user's notes from the server
- * Should be executed with the Auth Token as a parameter
+ * Should be executed with the Auth Token as the first parameter
  */
-public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
+public class PutNotesTask extends AsyncTask<String, Integer, Integer> {
 
 	private static final String TAG = "GetNotesTask";
-	private static final int FAILURE = 0;
-	private static final int SUCCESS = 1;
+	private static final int SUCCESS = 0;
+	private static final int FAILURE_UNKNOWN = 1;
+	private static final int FAILURE_NO_AUTH_TOKEN = 2;
+	private static final int FAILURE_NO_JSON = 3;
+	private static final int FAILURE_BAD_RESPONSE = 4;
 
 	/**
 	 * The URL used to get the user's notes on the server
@@ -29,8 +35,8 @@ public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
 	 * A simple functional interface that gets called once the token is received
 	 * or if there's a problem
 	 */
-	public static interface OnGetNotesListener {
-		public void onReceiveNotes(boolean success, String response);
+	public static interface OnPutNotesListener {
+		public void onResponse(boolean success, String response);
 	}
 	
 
@@ -40,25 +46,45 @@ public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
 	private String mResponse = "";
 
 	/**
+	 * The JSON to send to the server
+	 */
+	private String mJSON = "";
+
+	/**
 	 * Listener to call once we're done
 	 */
-	private OnGetNotesListener mListener;
+	private OnPutNotesListener mListener;
 
-	public void setListener(OnGetNotesListener listener) {
+	/**
+	 * Set the listener that will be called once the
+	 * notes are put to the server
+	 */
+	public void setListener(OnPutNotesListener listener) {
 		mListener = listener;
+	}
+
+	/**
+	 * Set the JSON to send to the server
+	 */
+	public void setJSON(String json){
+		mJSON = json;
 	}
 
 	@Override
 	protected Integer doInBackground(String... params) {
 
 		if (params.length != 1) {
-			return FAILURE;
+			return FAILURE_NO_AUTH_TOKEN;
 		}
 
 		String authToken = params[0];
 
 		if (authToken.isEmpty()) {
-			return FAILURE;
+			return FAILURE_NO_AUTH_TOKEN;
+		}
+
+		if(mJSON.isEmpty()){
+			return FAILURE_NO_JSON;
 		}
 
 		try {
@@ -66,8 +92,19 @@ public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
 
 			HttpsURLConnection con = (HttpsURLConnection) urlObject.openConnection();
 
-			con.setRequestMethod("GET");
+			con.setRequestMethod("POST");
 			con.setRequestProperty("Authorization", "Bearer " + authToken);
+			con.setRequestProperty("Content-Type", "application/json");
+			
+			con.setDoOutput(true);
+
+			con.connect();
+
+			// Write the JSON
+			OutputStreamWriter output = new OutputStreamWriter(con.getOutputStream());
+			output.write(mJSON);
+			output.flush();
+			output.close();
 
 			int serverCode = con.getResponseCode();
 
@@ -81,7 +118,7 @@ public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
 					Log.e(TAG, line);
 				}
 
-				return FAILURE;
+				return FAILURE_BAD_RESPONSE;
 			} else {
 				// Response is good
 				BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -97,7 +134,7 @@ public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return FAILURE;
+			return FAILURE_UNKNOWN;
 		}
 	}
 
@@ -108,7 +145,7 @@ public class GetNotesTask extends AsyncTask<String, Integer, Integer> {
 
 	private void callListener(boolean success) {
 		if (mListener != null) {
-			mListener.onReceiveNotes(success, mResponse);
+			mListener.onResponse(success, mResponse);
 		}
 	}
 
