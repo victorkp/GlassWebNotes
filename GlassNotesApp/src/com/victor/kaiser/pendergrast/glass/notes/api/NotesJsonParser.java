@@ -1,4 +1,4 @@
-package com.victor.kaiser.pendergrast.glass.notes.auth;
+package com.victor.kaiser.pendergrast.glass.notes.api;
 
 import org.json.JSONObject;
 
@@ -21,7 +21,7 @@ public class NotesJsonParser {
 	private String mNotes;
 	private long mLastModified;
 
-	public AuthTokenJsonParser(String json) {
+	public NotesJsonParser(String json) {
 
 		try {
 			JSONObject obj = new JSONObject(json);

@@ -10,7 +10,18 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
 
+import com.victor.kaiser.pendergrast.glass.notes.api.GetNotesTask;
+import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonMaker;
+import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonParser;
+import com.victor.kaiser.pendergrast.glass.notes.api.PutNotesTask;
+import com.victor.kaiser.pendergrast.glass.notes.auth.AuthTokenJsonParser;
+import com.victor.kaiser.pendergrast.glass.notes.auth.RefreshAuthTokenTask;
 import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants;
 
 public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetTokenListener {
@@ -96,7 +107,9 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == VOICE_RECOGNIZER_REQUEST && resultCode == RESULT_OK) {
 			List<String> notes = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-			addNote(notes.get(0));
+			
+			mNewNote = notes.get(0);
+			addNote();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -150,7 +163,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 	private void addNote(){
 		// TODO add the note to local storage and send to server
 		PutNotesTask putTask = new PutNotesTask();
-		putTask.setJSON(JSONMaker.makeJSON(mNotes + mNewNote);
+		putTask.setJSON(NotesJsonMaker.makeJson(mNotes + mNewNote));
 		putTask.setListener(new PutNotesTask.OnPutNotesListener(){
 			@Override
 			public void onResponse(boolean success, String response){
