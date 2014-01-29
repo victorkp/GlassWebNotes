@@ -2,9 +2,6 @@ package com.victor.kaiser.pendergrast.glass.notes.api;
 
 import org.json.JSONObject;
 
-import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants;
-
-import android.content.SharedPreferences;
 
 public class NotesJsonParser {
 
@@ -27,9 +24,14 @@ public class NotesJsonParser {
 			JSONObject obj = new JSONObject(json);
 			
 			mEmail = obj.getString(JSONFields.EMAIL);
-			mNotes = obj.getString(JSONFields.NOTES);
 			mLastModified = obj.getLong(JSONFields.LAST_MODIFIED);
 			
+			// If there are no notes, then it won't even be in the JSON
+			if(obj.has(JSONFields.NOTES)){
+				mNotes = obj.getString(JSONFields.NOTES);
+			} else {
+				mNotes = "";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

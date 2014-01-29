@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
@@ -16,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
+import com.google.android.glass.media.Sounds;
 import com.victor.kaiser.pendergrast.glass.notes.api.GetNotesTask;
 import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonMaker;
 import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonParser;
@@ -123,7 +127,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 				Log.e(TAG, parser.getError());
 				
 				// Show failure to sync
-				displayFailure();
+				displayFailureToSignIn();
 				
 			}else{
 				parser.writeToPreferences(mPrefs);
@@ -148,7 +152,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 							addNote();
 						}else{
 							// Show failure to sync
-							displayFailure();
+							displayFailureToAdd();
 						}
 					}
 				});
@@ -194,7 +198,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 		// Play an error sound
 		playErrorSound();
 
-		mCardTitle.setText(R.string.text_failure_to_add);
+		mCardTitle.setText(R.string.text_failed_to_add_note);
 		mCardSubTitle.setText(getString(R.string.text_check_internet));
 		mCardImage.setImageResource(R.drawable.ic_warning_50);
 	}
@@ -203,7 +207,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 		// Play an error sound
 		playErrorSound();
 
-		mCardTitle.setText(R.string.text_failure_to_sign_in);
+		mCardTitle.setText(R.string.text_failed_to_sign_in);
 		mCardSubTitle.setText(getString(R.string.text_check_internet));
 		mCardImage.setImageResource(R.drawable.ic_warning_50);
 	}

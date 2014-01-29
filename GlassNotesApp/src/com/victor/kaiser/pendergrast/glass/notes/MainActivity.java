@@ -12,15 +12,21 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.glass.widget.CardScrollView;
 import com.victor.kaiser.pendergrast.glass.notes.auth.AuthTokenJsonParser;
 import com.victor.kaiser.pendergrast.glass.notes.auth.RefreshAuthTokenTask;
 import com.victor.kaiser.pendergrast.glass.notes.preferences.PreferenceConstants;
 import com.victor.kaiser.pendergrast.glass.notes.api.GetNotesTask;
+import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonParser;
+import com.victor.kaiser.pendergrast.glass.notes.content.NoteAdapter;
 
 public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGetTokenListener {
 	private static final String TAG = "MainActivity";
 
 	private SharedPreferences mPrefs;
+
+	private CardScrollView mScrollView;
+	private NoteAdapter mAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -81,13 +87,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			
 			if(parser.hasError()){
 				Log.e(TAG, parser.getError());
-				
-				// Show failure to sync
-				setContentView(R.layout.card_full_image);
-				((TextView) findViewById(R.id.card_title)).setText(getString(R.string.text_failed_to_sign_in));
-				((TextView) findViewById(R.id.card_subtitle)).setText(getString(R.string.text_check_internet));
-				((ImageView) findViewById(R.id.card_image)).setImageResource(R.drawable.ic_warning_50);
-				
+				displayFailureToSync();
 			}else{
 				parser.writeToPreferences(mPrefs);
 				String authToken = parser.getAuthToken();
@@ -101,11 +101,23 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 					public void onReceiveNotes(boolean success, String response){
 						Log.i(TAG, "onGetNotes: " + success);
 						if(success){
-							// Display the notes
+							// Display the notes contained in the response
 							Log.i(TAG, response);
+
+							// First extract the notes from the response
+							NotesJsonParser notesParser = new NotesJsonParser(response);
+							String notes = notesParser.getNotes();
+
+							if(notes.isEmpty()){
+								displayNoNotes();
+							}else{
+								// List the notes
+								displayNotes(notes);
+							}
+
 						}else{
-							// TODO Show failure to sync
-							
+							// Failed to get the notes
+							displayFailureToSync();
 						}
 					}
 				});
@@ -116,7 +128,33 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		}
 	}
 	
+	private void displayFailureToSync(){
+		// Show failure to sync
+		setContentView(R.layout.card_full_image);
+		((TextView) findViewById(R.id.card_title)).setText(getString(R.string.text_failed_to_get_notes));
+		((TextView) findViewById(R.id.card_subtitle)).setText(getString(R.string.text_check_internet));
+		((ImageView) findViewById(R.id.card_image)).setImageResource(R.drawable.ic_warning_50);
+	}
 	
+	private void displayNoNotes(){
+		// Show failure to sync
+		setContentView(R.layout.card_full_image);
+		((TextView) findViewById(R.id.card_title)).setText(getString(R.string.text_no_notes));
+		((TextView) findViewById(R.id.card_subtitle)).setText(getString(R.string.text_suggest_add_notes));
+		((ImageView) findViewById(R.id.card_image)).setImageResource(R.drawable.ic_pen_50);
+	}
+
+	private void displayNotes(String notes){
+		mScrollView = new CardScrollView(this);
+		
+		// Create the adapter and set it, allow interaction
+		mAdapter = new NoteAdapter(this, notes);
+		mScrollView.setAdapter(mAdapter);
+
+		// Show the CardScrollView
+		mScrollView.activate();
+		setContentView(mScrollView);
+	}
 
 }
 
