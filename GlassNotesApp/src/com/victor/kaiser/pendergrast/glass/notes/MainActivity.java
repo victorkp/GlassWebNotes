@@ -37,8 +37,8 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		// Check to make sure that there is a Refresh Token
 		if(mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, "").isEmpty()){
 			// Launch the authentication immersion
-			Intent i = new Intent(this, AuthActivity.class);
-			startActivity(i);
+			Intent authSetupIntent  = new Intent(this, AuthActivity.class);
+			startActivity(authSetupIntent);
 			finish();
 		}
 		
@@ -68,12 +68,17 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			break;
 		case R.id.menu_sign_out:
 			// Clear all the saved tokens and codes
-			// and then close this Activity
 			mPrefs.edit()
 				.putString(PreferenceConstants.AUTH_TOKEN, "")
 				.putString(PreferenceConstants.REFRESH_TOKEN, "")
 				.putString(PreferenceConstants.DEVICE_CODE, "")
 				.commit();
+			
+			// Start the AuthActivity to do setup
+			Intent authSetupIntent = new Intent(this, AuthActivity.class);
+			startActivity(authSetupIntent);
+
+			// Close this Activity
 			finish();
 			break;
 		}
