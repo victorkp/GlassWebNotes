@@ -2,6 +2,8 @@ package com.victor.kaiser.pendergrast.glass.notes;
 
 import android.app.Activity;
 import android.content.Context;
+
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -172,8 +174,10 @@ public class AuthActivity extends Activity {
 
 			case STATE_DONE:
 				// All done, finish this Activity
-				finish();
 				playSuccessSound();
+				Intent mainIntent = new Intent(this, MainActivity.class);
+				startActivity(mainIntent);
+				finish();
 				break;
 			}
 

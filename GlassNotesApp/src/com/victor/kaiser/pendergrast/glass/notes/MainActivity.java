@@ -39,6 +39,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			// Launch the authentication immersion
 			Intent i = new Intent(this, AuthActivity.class);
 			startActivity(i);
+			finish();
 		}
 		
 		Log.d(TAG, "Auth token: \"" + mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "") + "\"");

@@ -75,6 +75,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 			// Launch the authentication immersion
 			Intent i = new Intent(this, AuthActivity.class);
 			startActivity(i);
+			finish();
 		}
 		
 		Log.d(TAG, "Auth token: \"" + mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "") + "\"");
@@ -165,9 +166,9 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 
 	
 	private void addNote(){
-		// TODO add the note to local storage and send to server
+		// Add the note to the server
 		PutNotesTask putTask = new PutNotesTask();
-		putTask.setJSON(NotesJsonMaker.makeJson(mNotes + mNewNote));
+		putTask.setJSON(NotesJsonMaker.makeJson(mNewNote + "|" + mNotes));
 		putTask.setListener(new PutNotesTask.OnPutNotesListener(){
 			@Override
 			public void onResponse(boolean success, String response){
