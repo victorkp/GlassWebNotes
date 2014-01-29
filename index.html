@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>GlassWebNotes by victorkp</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>GlassWebNotes</h1>
+        <p>A sample application connecting the Glass GDK with App Engine Endpoints API</p>
+        <p class="view"><a href="https://github.com/victorkp/GlassWebNotes">View the Project on GitHub <small>victorkp/GlassWebNotes</small></a></p>
+        <ul>
+          <li><a href="https://github.com/victorkp/GlassWebNotes/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/victorkp/GlassWebNotes/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/victorkp/GlassWebNotes">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="glasswebnotes" class="anchor" href="#glasswebnotes"><span class="octicon octicon-link"></span></a>GlassWebNotes</h1>
+
+<p>By Victor Kaiser-Pendergrast</p>
+
+<h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>An application demonstrating how to connect the Glass GDK with <a href="https://developers.google.com/appengine/docs/whatisgoogleappengine">App Engine</a> <a href="https://developers.google.com/appengine/docs/java/endpoints/">Endpoints</a>. Sign-in is handled through OAuth for Devices. See <a href="https://developers.google.com/accounts/docs/OAuth2ForDevices">here</a> for Google's documentation on it.</p>
+
+<p>Notes are stored on the server component, which is a Java <a href="https://developers.google.com/appengine/docs/whatisgoogleappengine">Google App Engine</a> project. The server makes use of the <a href="https://developers.google.com/appengine/docs/java/endpoints/">Endpoints API</a></p>
+
+<h2>
+<a name="glass-application" class="anchor" href="#glass-application"><span class="octicon octicon-link"></span></a>Glass Application</h2>
+
+<p>The code for the Glass application is located in the <a href="https://github.com/victorkp/GlassWebNotes/tree/master/GlassNotesApp">GlassNotesApp</a> folder. It is a fairly straightforward Glass app.</p>
+
+<p>If anything, the parts to note are located under the <a href="https://github.com/victorkp/GlassWebNotes/tree/master/GlassNotesApp/src/com/victor/kaiser/pendergrast/glass/notes/auth">auth</a> subpackage. These classes are used to handle OAuth authentication.</p>
+
+<p>Also, see the classes under the <a href="https://github.com/victorkp/GlassWebNotes/tree/master/GlassNotesApp/src/com/victor/kaiser/pendergrast/glass/notes/api">api</a> subpackage, which demonstrate making API calls to the server through HTTP GETs and POSTs.</p>
+
+<h2>
+<a name="app-engine-component" class="anchor" href="#app-engine-component"><span class="octicon octicon-link"></span></a>App Engine Component</h2>
+
+<p>The App Engine side is also fairly basic; you can find it in the <a href="https://github.com/victorkp/GlassWebNotes/tree/master/GlassNotesServer">GlassNotesServer</a> folder. The <a href="https://developers.google.com/appengine/docs/java/endpoints/">Endpoints API</a> makes OAuth 2.0 rather easy to implement, see the code in <a href="https://github.com/victorkp/GlassWebNotes/blob/master/GlassNotesServer/src/com/victor/kaiser/pendergrast/glass/server/EndpointAPI.java">EndpointApi</a> for how easy it is to use OAuth 2.0 on App Engine.</p>
+
+<p>User notes are saved with the <a href="https://developers.google.com/appengine/docs/java/datastore/">Datastore API</a> and a write cache. A <a href="https://github.com/victorkp/GlassWebNotes/blob/master/GlassNotesServer/war/WEB-INF/cron.xml">cron</a> job is used to periodically persist all the data in the write cache to the <a href="https://developers.google.com/appengine/docs/java/datastore/">datastore</a>. See <a href="https://github.com/victorkp/GlassWebNotes/blob/master/GlassNotesServer/src/com/victor/kaiser/pendergrast/glass/server/data/UserDatabase.java">UserDatabase</a> for how the write cache is implemented.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/victorkp">victorkp</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
