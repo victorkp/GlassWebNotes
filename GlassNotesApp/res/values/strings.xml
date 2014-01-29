@@ -26,5 +26,6 @@
     <string name="text_tap_to_continue">Tap to continue</string>
     <string name="text_tap_to_try_again">Tap to try again</string>
     <string name="text_tap_to_finish">Tap to finish setup</string>
+    <string name="text_tap_for_options">Tap for options</string>
 
 </resources>

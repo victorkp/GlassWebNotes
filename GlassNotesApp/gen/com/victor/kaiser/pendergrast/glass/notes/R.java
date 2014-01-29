@@ -51,6 +51,7 @@ public final class R {
         public static final int text_no_notes=0x7f050010;
         public static final int text_sign_in_info=0x7f05000b;
         public static final int text_suggest_add_notes=0x7f050011;
+        public static final int text_tap_for_options=0x7f050017;
         public static final int text_tap_to_begin=0x7f050013;
         public static final int text_tap_to_continue=0x7f050014;
         public static final int text_tap_to_finish=0x7f050016;
