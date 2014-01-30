@@ -19,7 +19,7 @@ import android.util.Log;
  */
 public class PutNotesTask extends AsyncTask<String, Integer, Integer> {
 
-	private static final String TAG = "GetNotesTask";
+	private static final String TAG = "PutNotesTask";
 	private static final int SUCCESS = 0;
 	private static final int FAILURE_UNKNOWN = 1;
 	private static final int FAILURE_NO_AUTH_TOKEN = 2;
@@ -29,7 +29,7 @@ public class PutNotesTask extends AsyncTask<String, Integer, Integer> {
 	/**
 	 * The URL used to get the user's notes on the server
 	 */
-	private static final String URL_GET_NOTES = "https://glass-notes-app.appspot.com/_ah/api/endpoint/v1/notes_get";
+	private static final String URL_GET_NOTES = "https://glass-notes-app.appspot.com/_ah/api/endpoint/v1/notes_put";
 	
 	/**
 	 * A simple functional interface that gets called once the token is received
@@ -92,7 +92,7 @@ public class PutNotesTask extends AsyncTask<String, Integer, Integer> {
 
 			HttpsURLConnection con = (HttpsURLConnection) urlObject.openConnection();
 
-			con.setRequestMethod("POST");
+			con.setRequestMethod("PUT");
 			con.setRequestProperty("Authorization", "Bearer " + authToken);
 			con.setRequestProperty("Content-Type", "application/json");
 			

@@ -43,7 +43,7 @@ public class UserDatabase {
 	 * @return The users as a UserData, or <code>null</code> if no user has
 	 *         that email
 	 */
-	private static UserData getUserFromDatabaseByEmail(String email) {
+	public static UserData getUserFromDatabaseByEmail(String email) {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 		Key keyObject = KeyFactory.createKey(KIND_USER, email);
@@ -109,9 +109,10 @@ public class UserDatabase {
 		}
 
 		addToWriteCache(user.getEmail(), user);
+		addToUserCache(user.getEmail(), user);
 	}
 
-	private static void putUserIntoDatastore(UserData user) {
+	public static void putUserIntoDatastore(UserData user) {
 		if (user == null) {
 			return;
 		}
@@ -198,7 +199,7 @@ public class UserDatabase {
 		Set<String> keys = writeCache.keySet();
 
 		for (String userKey : keys) {
-			putUser(writeCache.get(userKey));
+			putUserIntoDatastore(writeCache.get(userKey));
 		}
 	}
 

@@ -24,7 +24,7 @@
     "maxAge" : 0
   },
   "methods" : {
-    "endpoint.notes.add" : {
+    "endpoint.notes.put" : {
       "path" : "notes_put",
       "httpMethod" : "PUT",
       "authLevel" : "NONE",

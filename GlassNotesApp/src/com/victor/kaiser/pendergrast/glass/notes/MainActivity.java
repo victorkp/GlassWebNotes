@@ -6,8 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
 
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +50,16 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		RefreshAuthTokenTask refreshAuthTask = new RefreshAuthTokenTask();
 		refreshAuthTask.setListener(this);
 		refreshAuthTask.execute(mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, ""));
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event){
+		if(keyCode == KeyEvent.KEYCODE_DPAD_CENTER){
+			openOptionsMenu();
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -118,6 +129,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 								displayNoNotes();
 							}else{
 								// List the notes
+								Log.d(TAG, "Notes: "+notes);
 								displayNotes(notes);
 							}
 

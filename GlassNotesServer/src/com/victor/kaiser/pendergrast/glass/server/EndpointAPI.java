@@ -43,10 +43,11 @@ public class EndpointAPI {
 			throw new OAuthRequestException("Couldn't authenticate");
 		}
 
-		UserData userData = UserDatabase.getUserByEmail(user.getEmail());
+		//UserData userData = UserDatabase.getUserByEmail(user.getEmail());
+		UserData userData = UserDatabase.getUserFromDatabaseByEmail(user.getEmail());
 
 		if(userData == null){
-			return new UserData(user.getEmail(), "", 0);
+			return new UserData(user.getEmail() + " not in datastore", "", 0);
 		}
 		
 		return userData;
@@ -55,7 +56,7 @@ public class EndpointAPI {
 	/**
 	 * Used by the client to set notes
 	 */
-	@ApiMethod(name = "notes.add", path="notes_put", httpMethod = HttpMethod.PUT, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.DEVICE_CLIENT_ID}, audiences = { Constants.ANDROID_AUDIENCE} )
+	@ApiMethod(name = "notes.put", path="notes_put", httpMethod = HttpMethod.PUT, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.DEVICE_CLIENT_ID}, audiences = { Constants.ANDROID_AUDIENCE} )
 	public UserData putReadArticles(User user, UserData data) throws OAuthRequestException, IOException, IllegalArgumentException {
 		
 		if (user == null) {
@@ -68,14 +69,17 @@ public class EndpointAPI {
 		
 		try{
 			// Add the data to the datastore
-			UserDatabase.putUser(data);
+			
+			//UserDatabase.putUser(data);
+			UserDatabase.putUserIntoDatastore(data);
+
 		} catch (Exception e){
 			e.printStackTrace();
 			return new UserData(user.getEmail(), "Failed to put into database", System.currentTimeMillis());
 		}
 		
 		// Success
-		data.setNotes("Successfully saved");
+		data.setNotes("Successfully saved: \"" + data.getNotes() + "\"");
 		
 		return data;
 	}

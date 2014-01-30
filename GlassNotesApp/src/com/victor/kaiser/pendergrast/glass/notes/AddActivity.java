@@ -37,6 +37,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 	private SharedPreferences mPrefs;
 
 	private String mNotes;
+	private String mEmail;
 	private String mNewNote;
 
 	private String mAuthToken;
@@ -62,8 +63,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 
 		mCardImage.setScaleType(ScaleType.CENTER_INSIDE);
 		
-		mCardTitle.setText(R.string.text_sign_in_info);
-		mCardSubTitle.setText(R.string.text_tap_to_begin);
+		mCardTitle.setText(R.string.text_loading);
 
 		mCardTitle.setGravity(Gravity.CENTER);
 
@@ -147,6 +147,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 							Log.i(TAG, response);
 							NotesJsonParser notesParser = new NotesJsonParser(response);
 							mNotes = notesParser.getNotes();
+							mEmail = notesParser.getEmail();
 							
 							// Now that we have the notes on the server,
 							// add the new note
@@ -168,7 +169,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 	private void addNote(){
 		// Add the note to the server
 		PutNotesTask putTask = new PutNotesTask();
-		putTask.setJSON(NotesJsonMaker.makeJson(mNewNote + "|" + mNotes));
+		putTask.setJSON(NotesJsonMaker.makeJson(mNewNote + "|" + mNotes, mEmail));
 		putTask.setListener(new PutNotesTask.OnPutNotesListener(){
 			@Override
 			public void onResponse(boolean success, String response){
