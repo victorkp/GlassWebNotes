@@ -42,9 +42,9 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 
 	private String mAuthToken;
 
-	private TextView mCardTitle;
-	private TextView mCardSubTitle;
-	private ImageView mCardImage;
+	private TextView mTitle;
+	private TextView mSubTitle;
+	private ImageView mImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +57,15 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 		// of sign in. On tap, we'll start the authentication
 		setContentView(R.layout.card_full_image);
 
-		mCardTitle = (TextView) findViewById(R.id.card_title);
-		mCardSubTitle = (TextView) findViewById(R.id.card_subtitle);
-		mCardImage = (ImageView) findViewById(R.id.card_image);
+		mTitle = (TextView) findViewById(R.id.card_title);
+		mSubTitle = (TextView) findViewById(R.id.card_subtitle);
+		mImage = (ImageView) findViewById(R.id.card_image);
 
-		mCardImage.setScaleType(ScaleType.CENTER_INSIDE);
+		mImage.setScaleType(ScaleType.CENTER_INSIDE);
 
-		mCardTitle.setText(R.string.text_loading);
+		mTitle.setText(R.string.text_loading);
 
-		mCardTitle.setGravity(Gravity.CENTER);
+		mTitle.setGravity(Gravity.CENTER);
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -172,10 +172,12 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 
 	private void addNote() {
 		// Add the note to the server
-		Log.d(TAG, "JSON:\n" + NotesJsonMaker.makeJson(mNewNote + "|" + mNotes, mEmail));
-		
 		PutNotesTask putTask = new PutNotesTask();
+
+		// Use the NotesJsonMaker helper class to make 
+		// JSON that can be interpretted by the server
 		putTask.setJSON(NotesJsonMaker.makeJson(mNewNote + "|" + mNotes, mEmail));
+
 		putTask.setListener(new PutNotesTask.OnPutNotesListener() {
 			@Override
 			public void onResponse(boolean success, String response) {
@@ -197,27 +199,27 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 		// Play an error sound
 		playErrorSound();
 
-		mCardTitle.setText(R.string.text_auth_failure);
-		mCardSubTitle.setText(R.string.text_tap_to_try_again);
-		mCardImage.setImageResource(R.drawable.ic_warning_50);
+		mTitle.setText(R.string.text_auth_failure);
+		mSubTitle.setText(R.string.text_tap_to_try_again);
+		mImage.setImageResource(R.drawable.ic_warning_50);
 	}
 
 	private void displayFailureToAdd() {
 		// Play an error sound
 		playErrorSound();
 
-		mCardTitle.setText(R.string.text_failed_to_add_note);
-		mCardSubTitle.setText(getString(R.string.text_check_internet));
-		mCardImage.setImageResource(R.drawable.ic_warning_50);
+		mTitle.setText(R.string.text_failed_to_add_note);
+		mSubTitle.setText(getString(R.string.text_check_internet));
+		mImage.setImageResource(R.drawable.ic_warning_50);
 	}
 
 	private void displayFailureToSignIn() {
 		// Play an error sound
 		playErrorSound();
 
-		mCardTitle.setText(R.string.text_failed_to_sign_in);
-		mCardSubTitle.setText(getString(R.string.text_check_internet));
-		mCardImage.setImageResource(R.drawable.ic_warning_50);
+		mTitle.setText(R.string.text_failed_to_sign_in);
+		mSubTitle.setText(getString(R.string.text_check_internet));
+		mImage.setImageResource(R.drawable.ic_warning_50);
 	}
 
 	/**

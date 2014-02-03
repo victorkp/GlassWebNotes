@@ -23,7 +23,9 @@ import android.widget.TextView;
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.widget.CardScrollView;
 import com.victor.kaiser.pendergrast.glass.notes.api.GetNotesTask;
+import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonMaker;
 import com.victor.kaiser.pendergrast.glass.notes.api.NotesJsonParser;
+import com.victor.kaiser.pendergrast.glass.notes.api.PutNotesTask;
 import com.victor.kaiser.pendergrast.glass.notes.auth.AuthTokenJsonParser;
 import com.victor.kaiser.pendergrast.glass.notes.auth.RefreshAuthTokenTask;
 import com.victor.kaiser.pendergrast.glass.notes.content.NoteAdapter;
@@ -39,6 +41,9 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 
 	private boolean mNotesShown = false;
 	private int mItemClicked = -1;
+
+	private String mAuthToken;
+	private String mEmail;
 
 	private TextView mTitle;
 	private TextView mSubtitle;
@@ -137,7 +142,17 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
 		case R.id.menu_delete_note:
-			
+			// Delete this note from the adapter
+			mAdapter.deleteNote(mItemClicked);
+
+			// Push the notes to the server
+			syncNotes(mAdapter.getNotes());
+
+			// If there aren't any notes left,
+			// show the "no notes" view
+			if(mAdapter.getCount() == 0){
+				displayNoNotes();
+			}
 			break;
 		case R.id.menu_add_note:
 			// Go to the AddActivity to add notes
@@ -186,7 +201,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 				
 				// Save this auth token for possible future use
 				parser.writeToPreferences(mPrefs);
-				String authToken = parser.getAuthToken();
+				mAuthToken = parser.getAuthToken();
 
 				// Now sync the notes with those on the server
 				GetNotesTask task = new GetNotesTask();
@@ -198,6 +213,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 							// Display the notes contained in the response,
 							// First extract the notes from the response
 							NotesJsonParser notesParser = new NotesJsonParser(response);
+							mEmail = notesParser.getEmail();
 							String notes = notesParser.getNotes();
 
 							if(notes.isEmpty()){
@@ -226,6 +242,31 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		}
 	}
 
+	private void syncNotes(String notes) {
+		// Add the note to the server
+		PutNotesTask putTask = new PutNotesTask();
+
+		// Use the NotesJsonMaker helper class to make 
+		// JSON that can be interpretted by the server
+		putTask.setJSON(NotesJsonMaker.makeJson(notes, mEmail));
+
+		putTask.setListener(new PutNotesTask.OnPutNotesListener() {
+			@Override
+			public void onResponse(boolean success, String response) {
+				if (success) {
+					// All done with putting notes
+					playSuccessSound();
+					finish();
+				} else {
+					// Show failure to sync
+					displayFailureToSet();
+				}
+			}
+		});
+
+		putTask.execute(mAuthToken);
+	}
+
 	private void displayGettingNotes(){
 		// Show getting notes
 		mTitle.setText(getString(R.string.text_getting_notes));
@@ -236,6 +277,15 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	private void displayFailureToSignIn(){
 		// Show failure to sign in
 		mTitle.setText(getString(R.string.text_failed_to_sign_in));
+		mSubtitle.setText(getString(R.string.text_check_internet));
+		mImage.setImageResource(R.drawable.ic_warning_50);
+	}
+
+	private void displayFailureToSet() {
+		// Play an error sound
+		playErrorSound();
+
+		mTitle.setText(R.string.text_failed_to_add_note);
 		mSubtitle.setText(getString(R.string.text_check_internet));
 		mImage.setImageResource(R.drawable.ic_warning_50);
 	}
@@ -278,6 +328,23 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		audio.playSoundEffect(Sounds.TAP);
 	}
+
+	/**
+	 * Play the standard Glass success sound
+	 */
+	protected void playSuccessSound() {
+		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		audio.playSoundEffect(Sounds.SUCCESS);
+	}
+
+	/**
+	 * Play the standard Glass failure sound
+	 */
+	protected void playErrorSound() {
+		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		audio.playSoundEffect(Sounds.ERROR);
+	}
+
 
 }
 

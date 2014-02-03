@@ -43,6 +43,20 @@ public class NoteAdapter extends CardScrollAdapter {
 
 	}
 
+	public void deleteNote(int index){
+		mCards.remove(index);
+		mNotes.remove(index);
+		notifyDataSetChanged();
+	}
+
+	public String getNotes(){
+		String notes = "";
+		for(String note : mNotes){
+			note += note + "|";
+		}
+		return notes;
+	}
+
 	@Override
 	public int findIdPosition(Object arg0) {
 		return -1;
