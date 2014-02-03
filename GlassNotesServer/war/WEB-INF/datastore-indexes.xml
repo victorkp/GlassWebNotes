@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="true">
+	<datastore-index kind="kind_user" ancestor="false"
+		source="manual">
+		<property name="email" direction="desc" />
+		<property name="time_modified" direction="desc" />
+	</datastore-index>
+</datastore-indexes>

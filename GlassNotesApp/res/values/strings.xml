@@ -6,6 +6,7 @@
     <string name="voice_add_launch">take a note</string>
     <string name="voice_add_prompt">go ahead</string>
     <string name="menu_add_note">Add Note</string>
+    <string name="menu_delete_note">Delete Note</string>
     <string name="menu_sign_out">Sign Out</string>
     <string name="title_activity_auth">Sign In</string>
     <string name="text_auth_failure">Could not connect</string>
@@ -17,6 +18,9 @@
     <string name="text_failed_to_add_note">Couldn\'t add the note</string>
     <string name="text_failed_to_sign_in">Couldn\'t sign in</string>
     <string name="text_failed_to_get_notes">Couldn\'t get your notes</string>
+
+    <string name="text_signing_in">Signing in&#8230;</string>
+    <string name="text_getting_notes">Getting notes&#8230;</string>
 
     <string name="text_no_notes">No Notes&#8320; yet</string>
     <string name="text_suggest_add_notes">Why not add some?</string>

@@ -34,14 +34,13 @@ public class UserDatabase {
 	private static final int WRITE_CACHE_INITIAL_SIZE = 20;
 	private static final int WRITE_CACHE_LOAD_FACTOR = 4;
 	private static HashMap<String, UserData> writeCache = null;
-	
 
 	/**
 	 * Opens the database to lookup the user
 	 * 
 	 * @param email
-	 * @return The users as a UserData, or <code>null</code> if no user has
-	 *         that email
+	 * @return The users as a UserData, or <code>null</code> if no user has that
+	 *         email
 	 */
 	public static UserData getUserFromDatabaseByEmail(String email) {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -63,8 +62,8 @@ public class UserDatabase {
 	 * database lookup if the user is not currently in the HashMap cache
 	 * 
 	 * @param key
-	 * @return The user as an UserData, or <code>null</code> if no user has
-	 *         that email
+	 * @return The user as an UserData, or <code>null</code> if no user has that
+	 *         email
 	 */
 	public static UserData getUserByEmail(String email) {
 		UserData user = getUserFromCache(email);
@@ -133,7 +132,7 @@ public class UserDatabase {
 		Entity entity = new Entity(keyObject);
 		entity.setProperty(EMAIL, user.getEmail());
 
-		Text notes = new Text(user.getNotes());
+		Text notes = new Text((user.getNotes() == null) ? ("") : (user.getNotes()));
 		entity.setProperty(NOTES, notes);
 
 		entity.setProperty(LAST_MODIFIED, user.getLastModified());
@@ -150,7 +149,11 @@ public class UserDatabase {
 		user.setEmail((String) entity.getProperty(EMAIL));
 
 		Text notesText = (Text) entity.getProperty(NOTES);
-		user.setNotes(notesText.getValue());
+		if (notesText == null) {
+			user.setNotes("");
+		} else {
+			user.setNotes(notesText.getValue());
+		}
 
 		user.setLastModified((Long) entity.getProperty(LAST_MODIFIED));
 
@@ -191,11 +194,11 @@ public class UserDatabase {
 	 * Enters all of the data in the writeCache into the datastore
 	 */
 	public static void writeCacheToDatastore() {
-		if(writeCache == null){
-			//Nothing to do
+		if (writeCache == null) {
+			// Nothing to do
 			return;
 		}
-		
+
 		Set<String> keys = writeCache.keySet();
 
 		for (String userKey : keys) {
@@ -208,11 +211,11 @@ public class UserDatabase {
 	 * clears the write cache
 	 */
 	public static void writeAndEmptyWriteCache() {
-		if(writeCache == null){
-			//Nothing to do 
+		if (writeCache == null) {
+			// Nothing to do
 			return;
 		}
-		
+
 		writeCacheToDatastore();
 		writeCache.clear();
 	}

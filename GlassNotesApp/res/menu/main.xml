@@ -6,6 +6,12 @@
 		android:title="@string/menu_add_note" />
 
 	<item
+		android:id="@+id/menu_delete_note"
+		android:icon="@drawable/ic_no_50"
+		android:title="@string/menu_delete_note"
+       		android:visible="false"	/> 
+
+	<item
 		android:id="@+id/menu_sign_out"
 		android:icon="@drawable/ic_no_50"
 		android:title="@string/menu_sign_out" />

@@ -36,7 +36,7 @@ public class EndpointAPI {
 	 * Used by the client to retrieve notes 
 	 */
 	@ApiMethod(name = "notes.list", path = "notes_get", httpMethod = HttpMethod.GET, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.DEVICE_CLIENT_ID }, audiences = { Constants.WEB_CLIENT_ID })
-	public UserData getReadArticles(User user) throws OAuthRequestException, IOException {
+	public UserData getNotes(User user) throws OAuthRequestException, IOException {
 		
 		// Check that the user is signed in
 		if (user == null) {
@@ -47,7 +47,9 @@ public class EndpointAPI {
 		UserData userData = UserDatabase.getUserFromDatabaseByEmail(user.getEmail());
 
 		if(userData == null){
-			return new UserData(user.getEmail() + " not in datastore", "", 0);
+			// Just return the request data with no notes and
+			// no request time
+			return new UserData(user.getEmail(), "", 0);
 		}
 		
 		return userData;
@@ -57,7 +59,7 @@ public class EndpointAPI {
 	 * Used by the client to set notes
 	 */
 	@ApiMethod(name = "notes.put", path="notes_put", httpMethod = HttpMethod.PUT, scopes = { Constants.SCOPE_EMAIL }, clientIds = { Constants.WEB_CLIENT_ID, Constants.DEVICE_CLIENT_ID}, audiences = { Constants.ANDROID_AUDIENCE} )
-	public UserData putReadArticles(User user, UserData data) throws OAuthRequestException, IOException, IllegalArgumentException {
+	public UserData putNotes(User user, UserData data) throws OAuthRequestException, IOException, IllegalArgumentException {
 		
 		if (user == null) {
 			throw new OAuthRequestException("Couldn't authenticate");
@@ -69,6 +71,7 @@ public class EndpointAPI {
 		
 		try{
 			// Add the data to the datastore
+			System.out.println("Adding notes: \"" + data.getNotes() + "\"");
 			
 			//UserDatabase.putUser(data);
 			UserDatabase.putUserIntoDatastore(data);
@@ -77,9 +80,6 @@ public class EndpointAPI {
 			e.printStackTrace();
 			return new UserData(user.getEmail(), "Failed to put into database", System.currentTimeMillis());
 		}
-		
-		// Success
-		data.setNotes("Successfully saved: \"" + data.getNotes() + "\"");
 		
 		return data;
 	}

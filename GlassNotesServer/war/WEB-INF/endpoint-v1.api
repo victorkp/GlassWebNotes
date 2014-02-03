@@ -24,22 +24,6 @@
     "maxAge" : 0
   },
   "methods" : {
-    "endpoint.notes.put" : {
-      "path" : "notes_put",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com" ],
-      "clientIds" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com", "81905218945.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putReadArticles",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "endpoint.notes.list" : {
       "path" : "notes_get",
       "httpMethod" : "GET",
@@ -47,9 +31,25 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com" ],
       "clientIds" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com", "81905218945.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getReadArticles",
+      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getNotes",
       "request" : {
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "endpoint.notes.put" : {
+      "path" : "notes_put",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com" ],
+      "clientIds" : [ "81905218945-ahl3tchl11rcsviiivne7unpl5mnijfh.apps.googleusercontent.com", "81905218945.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putNotes",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -91,15 +91,15 @@
       }
     },
     "methods" : {
-      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putReadArticles" : {
-        "request" : {
-          "$ref" : "UserData"
-        },
+      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getNotes" : {
         "response" : {
           "$ref" : "UserData"
         }
       },
-      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.getReadArticles" : {
+      "com.victor.kaiser.pendergrast.glass.server.EndpointAPI.putNotes" : {
+        "request" : {
+          "$ref" : "UserData"
+        },
         "response" : {
           "$ref" : "UserData"
         }

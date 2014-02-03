@@ -2,14 +2,20 @@ package com.victor.kaiser.pendergrast.glass.server.data;
 
 public class UserData {
 	
-	public String email;
-	public String notes;
-	public long lastModified;
+	private String email;
+	private String notes;
+	private long lastModified;
 	
 	public UserData(){
 		email = "";
 		notes = "";
 		lastModified = 0;
+	}
+	
+	public UserData(String email){
+		this.email = email;
+		this.notes = "";
+		this.lastModified = 0;
 	}
 	
 	public UserData(String email, String notes){

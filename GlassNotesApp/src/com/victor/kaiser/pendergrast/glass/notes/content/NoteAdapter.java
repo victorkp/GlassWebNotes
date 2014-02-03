@@ -3,10 +3,9 @@ package com.victor.kaiser.pendergrast.glass.notes.content;
 import java.util.ArrayList;
 
 import android.content.Context;
-
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.glass.app.Card;
 import com.google.android.glass.widget.CardScrollAdapter;
@@ -26,15 +25,20 @@ public class NoteAdapter extends CardScrollAdapter {
 	}
 
 	private void buildCards(String notes) {
-		String[] noteArray = notes.split("|");
+		String[] noteArray = notes.split("\\|");
+
 		mNotes = new ArrayList<String>(noteArray.length);
+		mCards = new ArrayList<Card>(mNotes.size());
 
 		for (String note : noteArray) {
+			Log.d(TAG, "Adding note \"" + note + "\"");
 			mNotes.add(note);
 
 			Card card = new Card(mContext);
 			card.setText(note);
 			card.setFootnote(mContext.getString(R.string.text_tap_for_options));
+
+			mCards.add(card);
 		}
 
 	}

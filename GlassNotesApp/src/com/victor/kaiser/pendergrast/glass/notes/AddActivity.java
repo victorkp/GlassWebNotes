@@ -62,25 +62,21 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 		mCardImage = (ImageView) findViewById(R.id.card_image);
 
 		mCardImage.setScaleType(ScaleType.CENTER_INSIDE);
-		
+
 		mCardTitle.setText(R.string.text_loading);
 
 		mCardTitle.setGravity(Gravity.CENTER);
 
-
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// Check to make sure that there is a Refresh Token
-		if(mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, "").isEmpty()){
+		if (mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, "").isEmpty()) {
 			// Launch the authentication immersion
 			Intent i = new Intent(this, AuthActivity.class);
 			startActivity(i);
 			finish();
 		}
-		
-		Log.d(TAG, "Auth token: \"" + mPrefs.getString(PreferenceConstants.AUTH_TOKEN, "") + "\"");
-		Log.d(TAG, "Refresh token: \"" + mPrefs.getString(PreferenceConstants.REFRESH_TOKEN, "") + "\"");
-		
+
 		// Get a new auth token and get the most recent notes
 		RefreshAuthTokenTask refreshAuthTask = new RefreshAuthTokenTask();
 		refreshAuthTask.setListener(this);
@@ -91,16 +87,22 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 	protected void onResume() {
 		super.onResume();
 
-		ArrayList<String> notes = getIntent().getExtras().getStringArrayList(
-				RecognizerIntent.EXTRA_RESULTS);
-
-		if (notes == null || notes.size() == 0) {
-
+		Intent i = getIntent();
+		if (i == null || i.getExtras() == null) {
 			// This must have not been launched from the "ok, glass" home menu
 			// so launch our own voice recognizer
 			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 			startActivityForResult(intent, VOICE_RECOGNIZER_REQUEST);
+			return;
+		}
 
+		ArrayList<String> notes = i.getExtras().getStringArrayList(RecognizerIntent.EXTRA_RESULTS);
+
+		if (notes == null || notes.size() == 0) {
+			// This must have not been launched from the "ok, glass" home menu
+			// so launch our own voice recognizer
+			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+			startActivityForResult(intent, VOICE_RECOGNIZER_REQUEST);
 		} else {
 			// Keep this note: it will be put on the server once
 			// all of the auth and sync is done
@@ -112,7 +114,7 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == VOICE_RECOGNIZER_REQUEST && resultCode == RESULT_OK) {
 			List<String> notes = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-			
+
 			mNewNote = notes.get(0);
 			addNote();
 		}
@@ -121,16 +123,16 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 
 	@Override
 	public void onResponse(boolean success, String response) {
-		if(success){
+		if (success) {
 			AuthTokenJsonParser parser = new AuthTokenJsonParser(response);
-			
-			if(parser.hasError()){
+
+			if (parser.hasError()) {
 				Log.e(TAG, parser.getError());
-				
+
 				// Show failure to sync
 				displayFailureToSignIn();
-				
-			}else{
+
+			} else {
 				parser.writeToPreferences(mPrefs);
 				mAuthToken = parser.getAuthToken();
 
@@ -138,42 +140,46 @@ public class AddActivity extends Activity implements RefreshAuthTokenTask.OnGetT
 				Log.i(TAG, "Starting GetNotesTask");
 
 				GetNotesTask task = new GetNotesTask();
-				task.setListener(new GetNotesTask.OnGetNotesListener(){
+				task.setListener(new GetNotesTask.OnGetNotesListener() {
 					@Override
-					public void onReceiveNotes(boolean success, String response){
+					public void onReceiveNotes(boolean success, String response) {
 						Log.i(TAG, "onGetNotes: " + success);
-						if(success){
+						if (success) {
 							// Display the notes
 							Log.i(TAG, response);
 							NotesJsonParser notesParser = new NotesJsonParser(response);
 							mNotes = notesParser.getNotes();
 							mEmail = notesParser.getEmail();
 							
+							Log.d(TAG, "Existing notes: \"" + mNotes + "\"");
+							Log.d(TAG, "Email: \"" + mEmail + "\"");
+
 							// Now that we have the notes on the server,
 							// add the new note
 							addNote();
-						}else{
+						} else {
 							// Show failure to sync
 							displayFailureToAdd();
 						}
 					}
 				});
-				
+
 				task.execute(mAuthToken);
-				
+
 			}
 		}
 	}
 
-	
-	private void addNote(){
+	private void addNote() {
 		// Add the note to the server
+		Log.d(TAG, "JSON:\n" + NotesJsonMaker.makeJson(mNewNote + "|" + mNotes, mEmail));
+		
 		PutNotesTask putTask = new PutNotesTask();
 		putTask.setJSON(NotesJsonMaker.makeJson(mNewNote + "|" + mNotes, mEmail));
-		putTask.setListener(new PutNotesTask.OnPutNotesListener(){
+		putTask.setListener(new PutNotesTask.OnPutNotesListener() {
 			@Override
-			public void onResponse(boolean success, String response){
-				if(success){
+			public void onResponse(boolean success, String response) {
+				if (success) {
 					// All done with putting notes
 					playSuccessSound();
 					finish();
