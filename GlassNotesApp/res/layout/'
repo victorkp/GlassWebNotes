@@ -60,7 +60,11 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 
 		// A basic card-style layout with a 
 		// full screen image in the background
-		setupLayout();
+		setContentView(R.layout.card_full_image);
+
+		mTitle = (TextView) findViewById(R.id.card_title);
+		mSubtitle = (TextView) findViewById(R.id.card_subtitle);
+		mImage = (ImageView) findViewById(R.id.card_image);
 
 		// This is a fairly generic layout,
 		// one customization this app does is it moves
@@ -144,23 +148,21 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			// Delete this note from the adapter
 			mAdapter.deleteNote(mItemClicked);
 
-			if(mAdapter.getCount() == 0){
-				// If there aren't any notes
-				// left, display the "no notes"
-				// view
-				displayNoNotes();
-			}else{
-				// Show the new notes,
-				// notifyDataSetChanged causes
-				// the application to crash immediately
-				// because the CardScrollView 
-				// had activate() called
-				displayNotes(mAdapter.getNotes());
-			}
+			// Show the new notes,
+			// notifyDataSetChanged causes
+			// the application to crash immediately
+			// because the CardScrollView 
+			// had activate() called
+			displayNotes(mAdapter.getNotes());
 
 			// Push the notes to the server
 			syncNotes(mAdapter.getNotes());
 
+			// If there aren't any notes left,
+			// show the "no notes" view
+			if(mAdapter.getCount() == 0){
+				displayNoNotes();
+			}
 			return true;
 		case R.id.menu_add_note:
 			Log.d(TAG, "menu_add_note");
@@ -267,7 +269,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			public void onResponse(boolean success, String response) {
 				if (success) {
 					// All done with putting notes
-
+					finish();
 				} else {
 					// Show failure to sync
 					displayFailureToSet();
@@ -286,8 +288,6 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	}
 
 	private void displayFailureToSignIn(){
-		setupLayout();
-
 		// Show failure to sign in
 		mTitle.setText(getString(R.string.text_failed_to_sign_in));
 		mSubtitle.setText(getString(R.string.text_check_internet));
@@ -295,8 +295,6 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	}
 
 	private void displayFailureToSet() {
-		setupLayout();
-
 		// Play an error sound
 		playErrorSound();
 
@@ -306,8 +304,6 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	}
 
 	private void displayFailureToSync(){
-		setupLayout();
-
 		// Show failure to sync
 		mTitle.setText(getString(R.string.text_failed_to_get_notes));
 		mSubtitle.setText(getString(R.string.text_check_internet));
@@ -315,8 +311,6 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 	}
 	
 	private void displayNoNotes(){
-		setupLayout();
-
 		// Show failure to sync
 		mTitle.setText(getString(R.string.text_no_notes));
 		mSubtitle.setText(getString(R.string.text_suggest_add_notes));
@@ -338,23 +332,6 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		setContentView(mScrollView);
 
 		mNotesShown = true;
-	}
-
-	/**
-	 * If the layout hasn't already been setup,
-	 * then set it up. This is useful when
-	 * the user had notes, but deleted all of them.
-	 * In that case, a CardScrollView was shown,
-	 * and the normal layout was deleted
-	 */
-	private void setupLayout(){
-		if(findViewById(R.id.card_title) == null){
-			setContentView(R.layout.card_full_image);
-
-			mTitle = (TextView) findViewById(R.id.card_title);
-			mSubtitle = (TextView) findViewById(R.id.card_subtitle);
-			mImage = (ImageView) findViewById(R.id.card_image);
-		}
 	}
 
 	/**

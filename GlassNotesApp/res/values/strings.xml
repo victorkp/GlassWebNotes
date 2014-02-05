@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">GlassNotesApp</string>
-    <string name="voice_list_launch">show me my notes</string>
+    <string name="voice_list_launch">show my notes</string>
     <string name="voice_add_launch">take a note</string>
     <string name="voice_add_prompt">go ahead</string>
     <string name="menu_add_note">Add Note</string>
@@ -11,6 +11,7 @@
     <string name="title_activity_auth">Sign In</string>
     <string name="text_auth_failure">Could not connect</string>
     <string name="text_loading">Loading&#8230;</string>
+    <string name="text_saving">Saving&#8230;</string>
     <string name="text_testing">Testing settings&#8230;</string>
     <string name="text_all_done">All done!</string>
     <string name="text_sign_in_info">Let\'s sign in&#8230;</string>
@@ -22,7 +23,7 @@
     <string name="text_signing_in">Signing in&#8230;</string>
     <string name="text_getting_notes">Getting notes&#8230;</string>
 
-    <string name="text_no_notes">No Notes&#8320; yet</string>
+    <string name="text_no_notes">No Notes... yet</string>
     <string name="text_suggest_add_notes">Why not add some?</string>
     
     <string name="text_check_internet">Make sure that you have internet access</string>

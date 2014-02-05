@@ -52,7 +52,7 @@ public class NoteAdapter extends CardScrollAdapter {
 	public String getNotes(){
 		String notes = "";
 		for(String note : mNotes){
-			note += note + "|";
+			notes += note + "|";
 		}
 		return notes;
 	}
