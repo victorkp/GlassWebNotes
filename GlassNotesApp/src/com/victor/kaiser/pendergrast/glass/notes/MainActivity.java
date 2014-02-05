@@ -153,13 +153,13 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			if(mAdapter.getCount() == 0){
 				displayNoNotes();
 			}
-			break;
+			return true;
 		case R.id.menu_add_note:
 			// Go to the AddActivity to add notes
 			Intent addIntent = new Intent(this, AddActivity.class);
 			finish();
 			startActivity(addIntent);
-			break;
+			return true;
 		case R.id.menu_sign_out:
 			// Clear all the saved tokens and codes
 			mPrefs.edit()
@@ -174,7 +174,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 
 			// Close this Activity
 			finish();
-			break;
+			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -233,7 +233,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 				
 				// GetNotesTask takes the auth token
 				// as a parameter in its execution
-				task.execute(authToken);
+				task.execute(mAuthToken);
 			}
 		}else{
 			// success was false for whatever reason,
@@ -247,7 +247,7 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 		PutNotesTask putTask = new PutNotesTask();
 
 		// Use the NotesJsonMaker helper class to make 
-		// JSON that can be interpretted by the server
+		// JSON in a way that the server expects
 		putTask.setJSON(NotesJsonMaker.makeJson(notes, mEmail));
 
 		putTask.setListener(new PutNotesTask.OnPutNotesListener() {
@@ -255,7 +255,6 @@ public class MainActivity extends Activity  implements RefreshAuthTokenTask.OnGe
 			public void onResponse(boolean success, String response) {
 				if (success) {
 					// All done with putting notes
-					playSuccessSound();
 					finish();
 				} else {
 					// Show failure to sync
