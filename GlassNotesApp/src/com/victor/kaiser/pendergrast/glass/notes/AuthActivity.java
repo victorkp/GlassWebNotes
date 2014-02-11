@@ -67,6 +67,7 @@ public class AuthActivity extends Activity {
 		mCardSubTitle.setText(R.string.text_tap_to_begin);
 
 		mCardTitle.setGravity(Gravity.CENTER);
+		mCardSubTitle.setGravity(Gravity.CENTER);
 	}
 
 	@Override
